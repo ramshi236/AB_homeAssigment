@@ -18,8 +18,6 @@ label_map_dataset={
     0:"0",
     2:"bicycle",
     4:"motorcycle",
-    10:"traffic light",
-    13:"stop sign",
     75:"remote",
     77:"cell phone",
 }
