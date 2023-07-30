@@ -9,6 +9,8 @@ from collections import defaultdict
 import PIL.Image
 import torch
 import pickle
+import os 
+import shutil
 
 path2data="./data/validation/data"
 path2json="./data/raw/instances_val2017.json"
@@ -31,15 +33,14 @@ def filter_dataset(dataset):
         new_targets = {"labels":[],"boxes":[]}
         for l,bb in zip(targets["labels"],targets["boxes"]):
             l = int(l)
-            if l in labels_map:
+            if l in label_map_dataset:
                 new_targets["labels"].append(l)
                 new_targets["boxes"].append(bb)
         if len(new_targets["labels"]) > 0:
             filtered_dataset.append((image,new_targets))
+    return filtered_dataset
         
-
-if __name__=="__main__":
-    
+def create_small_dataset(root:str):
     foz.download_zoo_dataset("coco-2017",dataset_dir="./data",split="validation"
                                 )
     transform = transforms.Compose(
@@ -54,3 +55,4 @@ if __name__=="__main__":
     filtered_dataset = filter_dataset(dataset)
     with open("./small_dataset.pkl","wb") as f:
         pickle.dump(filtered_dataset,f)
+    shutil.rmtree("./data/")
